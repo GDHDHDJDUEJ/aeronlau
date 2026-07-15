@@ -1,0 +1,29 @@
+<!doctype html><html lang='ms'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Template Kuiz</title><style>
+body{font-family:Arial;margin:0;background:linear-gradient(135deg,#4facfe,#8e44ad);display:flex;align-items:center;justify-content:center;min-height:100vh}
+.card{background:#fff;width:92%;max-width:760px;border-radius:18px;padding:24px;text-align:center}
+input,button{padding:12px;font-size:18px;border-radius:10px}
+button{border:none;cursor:pointer;margin:8px}
+.opt{display:block;width:100%}
+#bar{height:10px;background:#ddd;border-radius:8px;overflow:hidden}#fill{height:100%;background:#4caf50;width:100%}
+</style></head><body><div class='card' id='app'></div>
+<script>
+const qs=[
+["Jika kamu makan burger dan kentang goreng setiap hari, adakah badan kamu akan menjadi lebih sihat?",["Ya","Tidak"],1],
+["Bagaimanakah kita dapat mengamalkan pemakanan yang sihat?",["Makan mengikut Pinggan Sihat Malaysia","Makan mi segera dan keropok setiap hari"],0],
+["Kawan kamu suka makan gula-gula dan makanan bergoreng. Apakah yang akan kamu lakukan?",["Makan bersama kawan","Menasihati kawan supaya makan makanan yang lebih sihat"],1],
+["Antara makanan berikut, yang manakah lebih sihat?",["🍎 Buah epal","🍟 Kentang goreng"],0],
+["Mengapakah kita perlu makan buah-buahan dan sayur-sayuran setiap hari?",["Untuk membantu badan kekal sihat dan kuat","Untuk cepat mendapat sakit"],0]
+];
+let n="",i=0,s=0,t,intv;
+function home(){app.innerHTML=`<h1>🍎 Kuiz Pemakanan Sihat</h1><p>Masukkan nama anda</p><input id=name><br><button onclick='start()'>Mula</button>`}
+function start(){n=name.value||"Murid";load();}
+function load(){if(i>=qs.length){let p=Math.round(s/qs.length*100);let g=p==100?"🥇 Cemerlang":p>=80?"🥈 Sangat Baik":p>=60?"🥉 Baik":"💪 Cuba Lagi";app.innerHTML=`<h1>Tahniah ${n}!</h1><h2>${s}/${qs.length} (${p}%)</h2><h2>${g}</h2><button onclick='location.reload()'>Main Lagi</button>`;return;}
+app.innerHTML=`<h2>${i+1}. ${qs[i][0]}</h2><div id=bar><div id=fill></div></div><h3 id=tm></h3><div id=opts></div><div id=msg></div>`;
+qs[i][1].forEach((o,k)=>opts.innerHTML+=`<button class='opt' onclick='ans(${k})'>${String.fromCharCode(65+k)}. ${o}</button>`);
+t=15;tick();intv=setInterval(tick,1000)}
+function tick(){tm.innerText="⏳ "+t+" saat";fill.style.width=(t/15*100)+"%";if(t--<=0){clearInterval(intv);show(false)}}
+function ans(k){clearInterval(intv);show(k==qs[i][2])}
+function show(ok){msg.innerHTML=ok?"✅ Betul!":"❌ Salah!";if(ok)s++;opts.innerHTML="";setTimeout(()=>{i++;load()},1000)}
+home();
+</script></body></html>
